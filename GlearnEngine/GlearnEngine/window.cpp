@@ -4,13 +4,15 @@
 namespace GlearnWindow {
 
 	Window::Window()
-		: m_Input(0), m_Renderer(0){
+		: m_Input(0), 
+		m_Renderer(0){
 	}
 	Window::Window(const Window&){
 	}
 	Window::~Window(){
 	}
 
+	// public
 
 	bool Window::Init() {
 		int screenWidth = 0;
@@ -76,18 +78,40 @@ namespace GlearnWindow {
 		return true;
 	}
 
+	LRESULT CALLBACK Window::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam) {
+		switch (umsg) {
+		case WM_KEYDOWN: {
+			m_Input->KeyDown((unsigned int)wparam);
+			return 0;
+		}
+		case WM_KEYUP: {
+			m_Input->KeyUp((unsigned int)wparam);
+			return 0;
+		}
+		default: {
+			return DefWindowProc(hwnd, umsg, wparam, lparam);
+		}
+		}
+	}
+
+	// private
 
 	void Window::CleanupWindows() {
 		ShowCursor(true);							// show the curser again
 
-		if (FULL_SCREEN) {
+		if (FULL_SCREEN) {							// get out of fullscreen
 			ChangeDisplaySettings(NULL, 0);
 		}
 
-		DestroyWindow(m_hwnd);
+		DestroyWindow(m_hwnd);						// destroy window
 		m_hwnd = nullptr;
 
-		UnregisterClass(APP_NAME, m_hInstance);
+		UnregisterClass(APP_NAME, m_hInstance);		// free class
+		m_hInstance = nullptr;
+
+		AppHandle = nullptr;
+
+		return;
 	}
 
 	void Window::InitializeWindows(int& screenWidth, int& screenHeight) {
@@ -147,18 +171,20 @@ namespace GlearnWindow {
 		return true;
 	}
 
-	LRESULT CALLBACK Window::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam) {
-		switch (umsg){
-			case WM_KEYDOWN: {
-				m_Input->KeyDown((unsigned int)wparam);
+	// static
+
+	LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam) {
+		switch (umessage) {
+			case WM_DESTROY: {
+				PostQuitMessage(0);
 				return 0;
 			}
-			case WM_KEYUP: {
-				m_Input->KeyUp((unsigned int)wparam);
+			case WM_CLOSE: {
+				PostQuitMessage(0);
 				return 0;
 			}
 			default: {
-				return DefWindowProc(hwnd, umsg, wparam, lparam);
+				return AppHandle->MessageHandler(hwnd, umessage, wparam, lparam);
 			}
 		}
 	}
