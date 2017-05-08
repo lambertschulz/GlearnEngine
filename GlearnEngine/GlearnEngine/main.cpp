@@ -1,10 +1,34 @@
 #include <iostream>
 
 
+bool Init();
+bool Run();
+bool Cleanup();
+
+
+
 int main(){
 	
-	std::cout << "Hello World" << std::endl;
-	char a;
-	std::cin >> a;
+	Init();
+
+	Run();
+
+	Cleanup();
 	return 0;
+}
+
+
+bool Init() {
+
+
+}
+
+bool Run() {
+
+
+}
+
+bool Cleanup() {
+
+
 }
