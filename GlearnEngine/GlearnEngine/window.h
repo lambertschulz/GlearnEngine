@@ -8,7 +8,7 @@
 #include <windows.h>
 
 #include "input.h"
-#include "graphics.h"
+#include "renderer.h"
 
 namespace GlearnWindow {
 	class Window
@@ -24,13 +24,18 @@ namespace GlearnWindow {
 		bool Cleanup();
 
 		LRESULT CALLBACK MessageHandler(HWND, UINT, WPARAM, LPARAM);
+	private:
+		bool Frame();
+		void InitializeWindows(int& screenWidth, int& screenHeight);
+		void CleanupWindows();
+
 
 	private:
 		LPCWSTR m_appName;					// pointer to the application name
 		HINSTANCE m_hInstance;				// handle of the application
 		HWND m_hwnd;						// handle of the window
 
-		GlearnGraphics::Graphics* m_Graphics;
+		GlearnRenderer::Renderer* m_Renderer;
 		GlearnInput::Input* m_Input;
 	};
 

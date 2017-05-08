@@ -1,28 +1,28 @@
-#ifndef _GRAPHICS_H
-#define _GRAPHICS_H
+#ifndef _RENDERER_H
+#define _RENDERER_H
 
 #include <windows.h>
 
-namespace GlearnGraphics {
+namespace GlearnRenderer {
 	const bool FULL_SCREEN = false;
 	const bool VSYNC_ENABLED = true;
 	const float SCREEN_DEPTH = 1000.0f;
 	const float SCREEN_NEAR = 0.1f;
 
-	class Graphics
+	class Renderer
 	{
 	public:
-		Graphics();
-		Graphics(const Graphics&);
-		~Graphics();
+		Renderer();
+		Renderer(const Renderer&);
+		~Renderer();
 
 		bool Init(int, int, HWND);
 		bool Cleanup();
-		bool Run();
+		bool Frame();
 
 	private:
 		bool Render();
 	};
 }
 
-#endif // !_GRAPHICS_H
+#endif // !_RENDERER_H
