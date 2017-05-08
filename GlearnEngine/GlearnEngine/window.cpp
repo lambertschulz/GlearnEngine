@@ -1,5 +1,6 @@
 #include "window.h"
 #include "globalDefines.h"
+#include "renderer.h"
 
 namespace GlearnWindow {
 
@@ -99,7 +100,7 @@ namespace GlearnWindow {
 	void Window::CleanupWindows() {
 		ShowCursor(true);							// show the curser again
 
-		if (FULL_SCREEN) {							// get out of fullscreen
+		if (GlearnRenderer::FULL_SCREEN) {							// get out of fullscreen
 			ChangeDisplaySettings(NULL, 0);
 		}
 
@@ -138,7 +139,7 @@ namespace GlearnWindow {
 
 		EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &devmode);
 
-		if (FULL_SCREEN) {								// set screen to max size and 32bit depth
+		if (GlearnRenderer::FULL_SCREEN) {								// set screen to max size and 32bit depth
 			devmode.dmPelsWidth = (unsigned long)screenWidth;
 			devmode.dmPelsHeight = (unsigned long)screenHeight;
 			ChangeDisplaySettings(&devmode, CDS_FULLSCREEN);

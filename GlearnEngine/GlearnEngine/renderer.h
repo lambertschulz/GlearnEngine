@@ -1,10 +1,11 @@
 #ifndef _RENDERER_H
 #define _RENDERER_H
 
+#include "globalDefines.h"
 #include <windows.h>
 
 namespace GlearnRenderer {
-	const bool FULL_SCREEN = false;
+	const bool FULL_SCREEN = true;
 	const bool VSYNC_ENABLED = true;
 	const float SCREEN_DEPTH = 1000.0f;
 	const float SCREEN_NEAR = 0.1f;
@@ -17,7 +18,7 @@ namespace GlearnRenderer {
 		~Renderer();
 
 		bool Init(int, int, HWND);
-		bool Cleanup();
+		void Cleanup();
 		bool Frame();
 
 	private:
