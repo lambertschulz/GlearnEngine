@@ -1,6 +1,6 @@
 #include "renderer.h"
 
-namespace GlearnRenderer {
+namespace GlearnGraphics {
 
 	Renderer::Renderer() {
 	}

@@ -29,7 +29,7 @@ namespace GlearnWindow {
 		m_Input->Init();
 
 		// Initialize Renderer
-		m_Renderer = new GlearnRenderer::Renderer;
+		m_Renderer = new GlearnGraphics::Renderer;
 		if (!m_Renderer) {
 			return false;
 		}
@@ -100,7 +100,7 @@ namespace GlearnWindow {
 	void Window::CleanupWindows() {
 		ShowCursor(true);							// show the curser again
 
-		if (GlearnRenderer::FULL_SCREEN) {							// get out of fullscreen
+		if (GlearnGraphics::FULL_SCREEN) {							// get out of fullscreen
 			ChangeDisplaySettings(NULL, 0);
 		}
 
@@ -139,7 +139,7 @@ namespace GlearnWindow {
 
 		EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &devmode);
 
-		if (GlearnRenderer::FULL_SCREEN) {								// set screen to max size and 32bit depth
+		if (GlearnGraphics::FULL_SCREEN) {								// set screen to max size and 32bit depth
 			devmode.dmPelsWidth = (unsigned long)screenWidth;
 			devmode.dmPelsHeight = (unsigned long)screenHeight;
 			ChangeDisplaySettings(&devmode, CDS_FULLSCREEN);

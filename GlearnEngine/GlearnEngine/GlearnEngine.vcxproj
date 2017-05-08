@@ -111,12 +111,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="d3d.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="d3d.h" />
     <ClInclude Include="globalDefines.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="input.h" />

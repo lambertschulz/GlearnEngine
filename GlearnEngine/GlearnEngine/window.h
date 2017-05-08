@@ -35,7 +35,7 @@ namespace GlearnWindow {
 		HINSTANCE m_hInstance;				// handle of the application
 		HWND m_hwnd;						// handle of the window
 
-		GlearnRenderer::Renderer* m_Renderer;
+		GlearnGraphics::Renderer* m_Renderer;
 		GlearnInput::Input* m_Input;
 	};
 
