@@ -78,19 +78,63 @@ namespace GlearnWindow {
 
 
 	void Window::CleanupWindows() {
+		ShowCursor(true);							// show the curser again
 
+		if (FULL_SCREEN) {
+			ChangeDisplaySettings(NULL, 0);
+		}
+
+		DestroyWindow(m_hwnd);
+		m_hwnd = nullptr;
+
+		UnregisterClass(APP_NAME, m_hInstance);
 	}
+
 	void Window::InitializeWindows(int& screenWidth, int& screenHeight) {
-		WNDCLASSEX wc;
-		DEVMODE dmScreenSettings;
+		WNDCLASSEX wc = {};
+		DEVMODE devmode = {};
 		int posX, posY;
 
-		AppHandle = this;							// gets an external pointer to this object
+		AppHandle = this;								// gets an external pointer to this object
+		m_hInstance = GetModuleHandle(NULL);			// gets an handle of this application
 
-		m_hInstance = GetModuleHandle(NULL);		// gets an handle of this application
+		// defining window class
+		wc.cbSize = sizeof(WNDCLASSEX);
+		wc.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
+		wc.lpfnWndProc = WndProc;
+		wc.hInstance = m_hInstance;
+		wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
+		wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+		wc.lpszClassName = APP_NAME;					// app_name taken from the global defines
 
-		m_appName = APP_NAME;						// app_name taken from the global defines
+		RegisterClassEx(&wc);							// register the window class
 
+		screenWidth = GetSystemMetrics(SM_CXSCREEN);	// gets the users screen width
+		screenHeight = GetSystemMetrics(SM_CYSCREEN);	// and height
+
+		EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &devmode);
+
+		if (FULL_SCREEN) {								// set screen to max size and 32bit depth
+			devmode.dmPelsWidth = (unsigned long)screenWidth;
+			devmode.dmPelsHeight = (unsigned long)screenHeight;
+			ChangeDisplaySettings(&devmode, CDS_FULLSCREEN);
+			posX = posY = 0;							// set top left corner
+		} else {										// set screen too 800x600
+			screenWidth = 800;
+			screenHeight = 600;
+			posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth) / 2;
+			posY = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
+		}
+		DWORD wndStyle = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP;
+		m_hwnd = CreateWindowEx(WS_EX_APPWINDOW, APP_NAME, APP_NAME, wndStyle, posX, posY, screenWidth, screenHeight, NULL, NULL, m_hInstance, NULL);
+
+		ShowWindow(m_hwnd, SW_SHOW);					// shows window
+		SetForegroundWindow(m_hwnd);					// set this application in foreground
+		SetFocus(m_hwnd);								// give focus to this application
+
+		ShowCursor(false);								// dont show the curser
+
+		return;
 	}
 
 	bool Window::Frame() {
