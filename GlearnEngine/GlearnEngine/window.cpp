@@ -1,4 +1,5 @@
 #include "window.h"
+#include "globalDefines.h"
 
 namespace GlearnWindow {
 
@@ -80,8 +81,18 @@ namespace GlearnWindow {
 
 	}
 	void Window::InitializeWindows(int& screenWidth, int& screenHeight) {
+		WNDCLASSEX wc;
+		DEVMODE dmScreenSettings;
+		int posX, posY;
+
+		AppHandle = this;							// gets an external pointer to this object
+
+		m_hInstance = GetModuleHandle(NULL);		// gets an handle of this application
+
+		m_appName = APP_NAME;						// app_name taken from the global defines
 
 	}
+
 	bool Window::Frame() {
 		if (m_Input->IsKeyDown(VK_ESCAPE)) {		// if user pressed ESC return false to close the application
 			return false;							
@@ -91,4 +102,21 @@ namespace GlearnWindow {
 		}
 		return true;
 	}
-}
+
+	LRESULT CALLBACK Window::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam) {
+		switch (umsg){
+			case WM_KEYDOWN: {
+				m_Input->KeyDown((unsigned int)wparam);
+				return 0;
+			}
+			case WM_KEYUP: {
+				m_Input->KeyUp((unsigned int)wparam);
+				return 0;
+			}
+			default: {
+				return DefWindowProc(hwnd, umsg, wparam, lparam);
+			}
+		}
+	}
+
+}//End of namespace GlearnWindow
